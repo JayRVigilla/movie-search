@@ -6,9 +6,10 @@
  */
 
 const axios = require('axios')
+const {API_KEY} = require('../secrets')
 
 const header = {
-	"x-rapidapi-key": "d0b9f50c04msh96a27d00b76a824p147cb4jsn935f6bf9deda",
+	"x-rapidapi-key": API_KEY,
 	"x-rapidapi-host": "movies-tvshows-data-imdb.p.rapidapi.com",
 	"useQueryString": true
 }
