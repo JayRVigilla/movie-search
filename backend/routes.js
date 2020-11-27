@@ -6,6 +6,7 @@ const router = new express.Router();
 
 const API_BASE = 'https://movies-tvshows-data-imdb.p.rapidapi.com/'
 const getApiData = require('./helpers/getApiData');
+const { API_KEY } = require('./secrets');
 
 /**
  * GET movie titles from query
@@ -25,9 +26,11 @@ router.get('/search', async function (req, res, next) {
   try {
     const q = req.query.q
     const qString = `title=${q}`
-    console.log('qString', qString)
-    const response = await getApiData(`${API_BASE}?${qString}&type=get-movies-by-title`).data
-    return res.json({ response });
+    // console.log('qString', qString)
+    const response = await getApiData(`${API_BASE}?${qString}&type=get-movies-by-title`)
+    const results = response.data.movie_results
+    // console.log('*****\n\n Value of results in routes', results, '\n\n *****')
+    return res.json({ results });
    }catch(err){
     return next(err);
   }
@@ -58,12 +61,20 @@ router.get('/search', async function (req, res, next) {
   *               status_message
   *               }
   */
-router.get('/movie', async function (req, res, next) {
+router.get('/movies', async function (req, res, next) {
   try {
-    const q = req.body.q
+    const q = req.query.q
     const qString = `imdb=${q}`
-    const response = await getApiData(`${API_BASE}?${qString}&type=get-movie-details`).data
-    return res.json({ response });
+    const response = await getApiData(`${API_BASE}?${qString}&type=get-movie-details`, {
+      header: {
+          "x-rapidapi-key": API_KEY,
+          "x-rapidapi-host": "movies-tvshows-data-imdb.p.rapidapi.com",
+          "useQueryString": true
+      }
+    })
+    const movie = response.data
+    // console.log('*****\n\n Value of movie in routes', movie, '\n\n *****')
+    return res.json({ movie });
     }catch(err){
     return next(err);
   }
