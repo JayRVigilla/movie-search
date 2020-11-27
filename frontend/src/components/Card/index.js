@@ -2,10 +2,10 @@
 import './Card.css';
 
 /**
+ * Card to display quick movie details in a list
  *
  * @param {data} param0 Object
  *
- * Card to display quick movie details in a list
  *
  */
 

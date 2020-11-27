@@ -1,12 +1,11 @@
-// import list item component, a card for instance
 import './List.css';
 import Card from'./../Card';
 
 /**
+ * Unordered list that will render list item components
  *
  * @param {listData} param0 Array
  *
- * Unordered list that will render list item components
  *
  */
 
