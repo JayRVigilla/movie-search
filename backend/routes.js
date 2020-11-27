@@ -23,8 +23,9 @@ const getApiData = require('./helpers/getApiData');
  * */
 router.get('/search', async function (req, res, next) {
   try {
-    const q = req.body.q
+    const q = req.query.q
     const qString = `title=${q}`
+    console.log('qString', qString)
     const response = await getApiData(`${API_BASE}?${qString}&type=get-movies-by-title`).data
     return res.json({ response });
    }catch(err){
