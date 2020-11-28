@@ -1,6 +1,6 @@
 
 const express = require('express');
-const ExpressError = require('./helpers/expressError');
+const ExpressError = require('./helpers/ExpressError');
 
 const router = new express.Router();
 

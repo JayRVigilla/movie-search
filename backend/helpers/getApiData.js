@@ -6,7 +6,7 @@
  */
 
 const axios = require('axios')
-const {API_KEY} = require('../secrets')
+const {API_KEY} = require('./../secrets')
 
 async function getApiData(url) {
   try {
