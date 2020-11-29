@@ -87,7 +87,13 @@ router.get('/movies', async function (req, res, next) {
  */
 router.patch('/movies/:id', async function (req, res, next) {
   try {
-    const likes = Like.getMovieLikes
+    const reqThumb = req.body
+    const id = rq.param.id
+    const movielikes = reqThumb.thumbs_up
+      ? Like.thumbs_up(id)
+      : Like.thumbs_down(id)
+
+    return res.json({ movieLikes })
   } catch (err) {
     return next(err)
   }

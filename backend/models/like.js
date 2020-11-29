@@ -1,8 +1,7 @@
+/** Related functions for likes table. */
+
 const db = require("./../db");
 const ExpressError = require("../helpers/ExpressError");
-// const sqlForPartialUpdate = require("../helpers/partialUpdate");
-
-/** Related functions for Likes table. */
 
 class Like {
   /** Given a movie id, return likes date for movie. */
@@ -39,24 +38,15 @@ class Like {
    */
 
   static async thumbUp(id) {
-    // let { query, values } = sqlForPartialUpdate("likes", data, "id", id);
     const sqlQuery = `UPDATE likes
                       SET thumbs_up = thumbs_up + 1
                       WHERE id = $1
-                      RETURNING thumbs_up`
-    // let { query, values } = db.query(
-    //   `UPDATE likes
-    //   SET thumbs_up = thumbs_up + 1
-    //   WHERE id = $1
-    //   RETURNING thumbs_up`, [id]
-    // )
+                      RETURNING id, thumbs_down, thumbs_up`
+
     const result = await db.query(sqlQuery,[id]);
     const like = result.rows[0];
 
     if (!like) {
-      // Like.create(id)
-      // console.log('***\ncreated movie with id: ', id, ' for thumbs_up')
-      // Like.thumbUp(id)
       console.log(`No movie likes in table at id=${id}`)
     }
 
@@ -70,23 +60,15 @@ class Like {
    */
 
   static async thumbDown(id) {
-    // let { query, values } = sqlForPartialUpdate("likes", data, "id", id);
     const sqlQuery =`UPDATE likes
                     SET thumbs_down = thumbs_down + 1
                     WHERE id = $1
-                    RETURNING thumbs_down`
-    // let { query, values } = db.query(
-    //   `UPDATE likes
-    //   SET thumbs_down = thumbs_down + 1
-    //   WHERE id = $1`, [id]
-    // )
+                    RETURNING id, thumbs_up, thumbs_down`
+
     const result = await db.query(sqlQuery,[id]);
     const like = result.rows[0];
 
     if (!like) {
-      // Like.create(id)
-      // console.log('***\ncreated movie with id: ', id, ' for thumbs_down')
-      // Like.thumbDown(id)
       console.log(`No movie likes in table at id=${id}`)
     }
 
@@ -94,11 +76,11 @@ class Like {
   }
 
   /** Delete given job from database; returns undefined. */
-
   static async remove(id) {
     const sqlQuery = `DELETE FROM likes
-    WHERE id = $1
-    RETURNING id`,
+                      WHERE id = $1
+                      RETURNING id`
+
     const result = await db.query(sqlQuery,[id]);
 
     if (result.rows.length === 0) {
