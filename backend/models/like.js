@@ -1,116 +1,111 @@
-const db = require("../db");
+const db = require("./../db");
 const ExpressError = require("../helpers/ExpressError");
-const sqlForPartialUpdate = require("../helpers/partialUpdate");
+// const sqlForPartialUpdate = require("../helpers/partialUpdate");
 
 /** Related functions for Likes table. */
 
-class Likes {
-  /** Find all jobs (can filter on terms in data). */
-
+class Like {
+  /** Given a movie id, return likes date for movie. */
   static async getMovieLikes(id) {
-    let baseQuery = "SELECT id, thumbs_up, thumbs_down FROM likes";
-    let whereExpressions = [];
-    let queryValues = [];
+    const sqlQuery = `SELECT id, thumbs_up, thumbs_down
+                      FROM likes
+                      WHERE id = $1`
 
-    // For each possible search term, add to whereExpressions and
-    // queryValues so we can generate the right SQL
-
-    if (data.min_salary) {
-      queryValues.push(+data.min_employees);
-      whereExpressions.push(`min_salary >= $${queryValues.length}`);
-    }
-
-    if (data.max_equity) {
-      queryValues.push(+data.max_employees);
-      whereExpressions.push(`min_equity >= $${queryValues.length}`);
-    }
-
-    if (data.search) {
-      queryValues.push(`%${data.search}%`);
-      whereExpressions.push(`title LIKE $${queryValues.length}`);
-    }
-
-    if (whereExpressions.length > 0) {
-      baseQuery += " WHERE ";
-    }
-
-    // Finalize query and return results
-
-    let finalQuery = baseQuery + whereExpressions.join(" AND ");
-    const jobsRes = await db.query(finalQuery, queryValues);
-    return jobsRes.rows;
-  }
-
-  /** Given a job id, return data about job. */
-
-  static async findOne(id) {
-    const likesRes = await db.query(
-      `SELECT id, thumbs_up, thumbs_down
-        FROM likes
-        WHERE id = $1`,
-      [id]
-    );
-
+    const likesRes = await db.query(sqlQuery,[id]);
     const likes = likesRes.rows[0];
 
     if (!likes) {
-      throw new ExpressError(`There exists no job '${id}'`, 404);
+      Like.create(id)
+      // throw new ExpressError(`There exists no likes '${id}'`, 404);
     }
 
     return likes;
   }
 
   /** Create a movie likes row (from data), update db, return new job data. */
-
-  static async create(id, data) {
-    const result = await db.query(
-      `INSERT INTO likes (id, thumbs_up, thumbs_down)
-        VALUES ($1, $2, $3, $4)
-        RETURNING id, thumbs_up, thumbs_down`,
-      [data.id, data.thumbs_up, data.thumbs_down]
-    );
+  static async create(id) {
+    const sqlQuery = `INSERT INTO likes (id)
+                      VALUES ($1)
+                      RETURNING id, thumbs_up, thumbs_down`
+    const result = await db.query(sqlQuery,[id]);
 
     return result.rows[0];
   }
 
-  /** Update like data with `data`.
+  /** Update like table @ thumbs_up
    *
-   * This is a "partial update" --- it's fine if data doesn't contain
-   * all the fields; this only changes provided ones.
-   *
-   * Return data for changed job.
+   * Return data for changed like.
    *
    */
 
-  static async update(id, data) {
-    let { query, values } = sqlForPartialUpdate("likes", data, "id", id);
-
-    const result = await db.query(query, values);
+  static async thumbUp(id) {
+    // let { query, values } = sqlForPartialUpdate("likes", data, "id", id);
+    const sqlQuery = `UPDATE likes
+                      SET thumbs_up = thumbs_up + 1
+                      WHERE id = $1
+                      RETURNING thumbs_up`
+    // let { query, values } = db.query(
+    //   `UPDATE likes
+    //   SET thumbs_up = thumbs_up + 1
+    //   WHERE id = $1
+    //   RETURNING thumbs_up`, [id]
+    // )
+    const result = await db.query(sqlQuery,[id]);
     const like = result.rows[0];
 
     if (!like) {
-      // throw new ExpressError(`There exists no movie at that id ${id}`, 404);
-      // should create with data
+      // Like.create(id)
+      // console.log('***\ncreated movie with id: ', id, ' for thumbs_up')
+      // Like.thumbUp(id)
+      console.log(`No movie likes in table at id=${id}`)
     }
 
-    return job;
+    return like;
+  }
+
+ /** Update like table @ thumbs_down
+   *
+   * Return data for changed like.
+   *
+   */
+
+  static async thumbDown(id) {
+    // let { query, values } = sqlForPartialUpdate("likes", data, "id", id);
+    const sqlQuery =`UPDATE likes
+                    SET thumbs_down = thumbs_down + 1
+                    WHERE id = $1
+                    RETURNING thumbs_down`
+    // let { query, values } = db.query(
+    //   `UPDATE likes
+    //   SET thumbs_down = thumbs_down + 1
+    //   WHERE id = $1`, [id]
+    // )
+    const result = await db.query(sqlQuery,[id]);
+    const like = result.rows[0];
+
+    if (!like) {
+      // Like.create(id)
+      // console.log('***\ncreated movie with id: ', id, ' for thumbs_down')
+      // Like.thumbDown(id)
+      console.log(`No movie likes in table at id=${id}`)
+    }
+
+    return like;
   }
 
   /** Delete given job from database; returns undefined. */
 
   static async remove(id) {
-    const result = await db.query(
-      `DELETE FROM jobs
-        WHERE id = $1
-        RETURNING id`,
-      [id]
-    );
+    const sqlQuery = `DELETE FROM likes
+    WHERE id = $1
+    RETURNING id`,
+    const result = await db.query(sqlQuery,[id]);
 
     if (result.rows.length === 0) {
-      throw new ExpressError(`There exists no job '${id}`, 404);
+      throw new ExpressError(`There exists no Likes @ id='${id}`, 404);
     }
   }
 
 }
 
-module.exports = Job;
+module.exports = Like;

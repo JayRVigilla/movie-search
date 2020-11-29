@@ -1,5 +1,5 @@
 CREATE TABLE likes(
-  id TEXT PRIMARY KEY,
-  thumbs_up INTEGER NOT NULL,
-  thumbs_down INTEGER NOT NULL
-)
+    id INTEGER PRIMARY KEY,
+    thumbs_up INTEGER DEFAULT(0),
+    thumbs_down INTEGER DEFAULT(0)
+);

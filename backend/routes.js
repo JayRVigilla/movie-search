@@ -7,6 +7,7 @@ const router = new express.Router();
 const API_BASE = 'https://movies-tvshows-data-imdb.p.rapidapi.com/'
 const getApiData = require('./helpers/getApiData');
 const { API_KEY } = require('./secrets');
+const Like = require('./models/like')
 
 /**
  * GET movie titles from query
@@ -73,10 +74,22 @@ router.get('/movies', async function (req, res, next) {
       }
     })
     const movie = response.data
-    // console.log('*****\n\n Value of movie in routes', movie, '\n\n *****')
+    const {thumbs_up, thumbs_down} = await Like.getMovieLikes(q)
+    movie.movieLikes = { thumbs_down, thumbs_up }
+
     return res.json({ movie });
     }catch(err){
     return next(err);
+  }
+})
+/**
+ * Route for a movie's likes for adding thumbs up or down
+ */
+router.patch('/movies/:id', async function (req, res, next) {
+  try {
+    const likes = Like.getMovieLikes
+  } catch (err) {
+    return next(err)
   }
 })
 
