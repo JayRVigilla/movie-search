@@ -14,8 +14,9 @@ function Card({ data, getMovieDetails}) {
 
   return (
     <li className="movie-card">
-      <button onClick={() => getMovieDetails(imdb_id)}><h2>{title}</h2></button>
-      <p>{year}</p>
+      <button onClick={() => getMovieDetails(imdb_id)}>
+        <h2>{title}</h2>
+        <p>{year}</p></button>
     </li>
 
   );

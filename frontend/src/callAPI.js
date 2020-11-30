@@ -15,8 +15,9 @@ async function apiSearchByImdbId(id) {
 
 // movie detail by IMDB ID
 async function apiThumb(id, body) {
-  const res = await axios.patch(`${BACKEND_URL}/movies/${id}`, {'data': body})
-  return res.data
+  const res = await axios.patch(`${BACKEND_URL}/movies/${id}`, { 'data': body })
+  const likes = res.data
+  return likes
 }
 
 module.exports = { apiSearchByImdbId, apiSearchByTitle, apiThumb}

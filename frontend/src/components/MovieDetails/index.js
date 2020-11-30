@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import './MovieDetails.css';
 import Likes from './../Likes';
 const {apiThumb} = require('./../../callAPI')
@@ -13,31 +13,31 @@ const {apiThumb} = require('./../../callAPI')
 
 function MovieDetails({ data }) {
   const [filmData, setFilmData] = useState(data)
-  const { title,
-    directors,
-    year,
-    description,
-    movieLikes,
-    imdb_id} = filmData
 
-    const thumbUp = async (id) => {
-      const likesRes = await apiThumb(id, { thumbs_up: true })
-      setFilmData.movieLikes(likesRes.data)
-    }
+  const thumbUp = async (id) => {
+    const likesRes = await apiThumb(id, { thumbs_up: true })
+    const likes = likesRes.movieLikes
+    setFilmData({...filmData, movieLikes: likes})
+  }
 
     const thumbDown = async (id) => {
       const likesRes = await apiThumb(id, { thumbs_down: true })
-      setFilmData({...filmData, movieLikes: likesRes.data})
+      const likes = likesRes.movieLikes
+      setFilmData({...filmData, movieLikes: likes})
     }
+
+    useEffect(() => {
+      setFilmData(data)
+    }, [data])
 
   return (
     <div className="MovieDetails">
-      <h1>{title}, {year}</h1>
-      <p>Description: {description}</p>
-      <p>Directors: {directors.join(', ')}</p>
-      <Likes id={imdb_id}
-        tUp={movieLikes.thumbs_up}
-        tDown={movieLikes.thumbs_down}
+      <h1>{filmData.title}, {filmData.year}</h1>
+      <p>Description: {filmData.description}</p>
+      <p>Directors: {filmData.directors.join(', ')}</p>
+      <Likes id={filmData.imdb_id}
+        tUp={filmData.movieLikes.thumbs_up}
+        tDown={filmData.movieLikes.thumbs_down}
         thumbUp={thumbUp}
         thumbDown={thumbDown} />
     </div>
