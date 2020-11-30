@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('./app');
+const db = require('./db')
 
 const goodMoviesSearch = 'gremlins'
 const noneFoundMoviesSearch = 'asdfha;woIVNWEV8wv;l23'
@@ -9,14 +10,14 @@ const badTitleSearch = '3637800tt' // Gremlins, 1984 IMDB ID reversed
 
 describe("GET /search/", function() {
   test("Gets a list of movies", async function() {
-    const response = await request(app).get(`/search?title=${goodMoviesSearch}`);
+    const response = await request(app).get(`/api/search?title=${goodMoviesSearch}`);
     expect(response.statusCode).toEqual(200);
     expect(Array.isArray(response.body.movie_results)).toEqual(true);
     expect(response.body.movie_results.length()).toEqual(4);
   });
 
   test("Responds with empty {} if no movies found", async function() {
-    const response = await request(app).get(`/search?title=${noneFoundMoviesSearch}`);
+    const response = await request(app).get(`/api/search?title=${noneFoundMoviesSearch}`);
     expect(response.statusCode).toEqual(200);
     expect(response.body.movie_results).toEqual(undefined);
     expect(response.body).toEqual({/** empty object */});
@@ -25,7 +26,7 @@ describe("GET /search/", function() {
 
 describe("GET /movies/", function() {
   test("Gets movie details for a single movie", async function() {
-    const response = await request(app).get(`/movies?q=${goodTitleSearch}`);
+    const response = await request(app).get(`/api/movies?q=${goodTitleSearch}`);
     expect(response.statusCode).toEqual(200);
     expect(typeof response.body).toEqual("object");
     expect(response.body.title).toEqual("Gremlins");
@@ -34,12 +35,20 @@ describe("GET /movies/", function() {
   });
 
   test("Responds with empty {} if no movies found", async function() {
-    const response = await request(app).get(`/movies?q=${badTitleSearch}`);
+    const response = await request(app).get(`/api/movies?q=${badTitleSearch}`);
     expect(response.statusCode).toEqual(500);
     expect(response.body.movie_results).toEqual(undefined);
     expect(response.body.message).toMatch(/invalid input syntax for type integer:/);
   });
 });
+
+afterAll(async function () {
+    try {
+      await db.end();
+    } catch (err) {
+      console.error(err);
+    }
+})
 
 
 

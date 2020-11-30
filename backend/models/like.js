@@ -2,6 +2,9 @@
 
 const db = require("./../db");
 const ExpressError = require("../helpers/ExpressError");
+const getApiData = require('./../helpers/getApiData')
+const API_KEY = require("./../secrets")
+const API_BASE = 'https://movies-tvshows-data-imdb.p.rapidapi.com/'
 
 class Like {
   /** Given a movie id, return likes date for movie. */
@@ -14,19 +17,30 @@ class Like {
     const likes = likesRes.rows[0];
 
     if (!likes) {
-      Like.create(id)
-      // throw new ExpressError(`There exists no likes '${id}'`, 404);
+      // get movie data
+      const response = await getApiData(`${API_BASE}?imdb=${id}&type=get-movie-details`,{
+      header: {
+        "x-rapidapi-key": API_KEY,
+        "x-rapidapi-host": "movies-tvshows-data-imdb.p.rapidapi.com",
+          "useQueryString": true
+        }
+      })
+      const movie = response.data
+      const newLikes = await Like.create(id, movie.imdb_rating, movie.vote_count)
+      return newLikes
     }
 
     return likes;
   }
 
   /** Create a movie likes row (from data), update db, return new job data. */
-  static async create(id) {
-    const sqlQuery = `INSERT INTO likes (id)
-                      VALUES ($1)
+  static async create(id, imdb_rating, vote_count) {
+    const tUp = ~~(parseInt(imdb_rating) / 10 * parseInt(vote_count));
+    const tDown = parseInt(vote_count) - tUp;
+    const sqlQuery = `INSERT INTO likes (id, thumbs_up, thumbs_down)
+                      VALUES ($1, $2, $3)
                       RETURNING id, thumbs_up, thumbs_down`
-    const result = await db.query(sqlQuery,[id]);
+    const result = await db.query(sqlQuery,[id, tUp, tDown]);
 
     return result.rows[0];
   }
@@ -47,7 +61,7 @@ class Like {
     const like = result.rows[0];
 
     if (!like) {
-      console.log(`No movie likes in table at id=${id}`)
+      console.log(`No movie likes in table @ id=${id}`)
     }
 
     return like;
