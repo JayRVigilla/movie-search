@@ -9,15 +9,15 @@ import Card from'./../Card';
  *
  */
 
-function List({ listData }) {
-  const renderList = (items) => {
-    items.map((item) => < Card key={item.imdb_id} data={item} />
-    )
+function List({ listData, getMovieDetails }) {
+  const renderList = () => listData.map((item) => < Card key={ item.imdb_id} data={item} getMovieDetails={getMovieDetails}/>)
+  const style = {
+    'listStyleType': 'none'
   }
 
   return (
-    <ul className="List">
-      {renderList(listData)}
+    <ul className="List" style={style}>
+      {renderList()}
     </ul>
   );
 }

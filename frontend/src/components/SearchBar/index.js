@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import './SearchBar.css';
 
 /**
@@ -9,21 +9,11 @@ import './SearchBar.css';
  *
  */
 
-function SearchBar({ handleSubmit }) {
-  const INITIAL_STATE = {q:''}
-  const [formData, setFormData] = useState(INITIAL_STATE)
-
-  const handleChange = evt => {
-    const { name, value } = evt.target;
-    setFormData(fData => ({
-      ...fData,
-      [name]: value
-    }));
-  }
+function SearchBar({ handleSubmit, handleChange }) {
 
   return (
     <form action="submit" onSubmit={handleSubmit} onChange={handleChange}>
-      <input for="q" type="text" placeholder="Search by Title" />
+      <input name="q" type="text" placeholder="Search by Title" />
       <button>Search</button>
 </form>
   );

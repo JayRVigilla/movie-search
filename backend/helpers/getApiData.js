@@ -10,7 +10,6 @@ const {API_KEY} = require('./../secrets')
 
 async function getApiData(url) {
   try {
-    // console.log('*****\n\n Running getApiData from self \n\n *****')
     const response = await axios.get(url, {
       headers : {
       "x-rapidapi-key": API_KEY,
@@ -18,8 +17,6 @@ async function getApiData(url) {
         "useQueryString": true
       }
     })
-    // console.log(`*****\n\n Running getAPIData to ${url}  \n\n *****`)
-    // console.log('*****\n\n Value of response in getApiData', response, '\n\n *****')
     return response
   }catch(e){
     console.error(e)

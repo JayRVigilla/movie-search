@@ -27,10 +27,8 @@ router.get('/search', async function (req, res, next) {
   try {
     const q = req.query.q
     const qString = `title=${q}`
-    // console.log('qString', qString)
     const response = await getApiData(`${API_BASE}?${qString}&type=get-movies-by-title`)
     const results = response.data.movie_results
-    // console.log('*****\n\n Value of results in routes', results, '\n\n *****')
     return res.json({ results });
    }catch(err){
     return next(err);
