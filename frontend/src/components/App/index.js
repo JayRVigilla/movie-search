@@ -10,8 +10,8 @@ function App() {
   const INITIAL_STATE = {q:''}
   const [movieList, setMovieList] = useState(undefined)
   const [formData, setFormData] = useState(INITIAL_STATE)
-  // const [movieData, setMovieData] = useState(undefined)
-  const [movieData, setMovieData] = useState(movieDat)
+  const [movieData, setMovieData] = useState(undefined)
+  // const [movieData, setMovieData] = useState(movieDat)
 
   const handleChange = evt => {
     const { name, value } = evt.target;
@@ -36,8 +36,8 @@ function App() {
   return (
     <div>
       < SearchBar handleSubmit={handleSubmit} handleChange={handleChange}/>
-      {movieList ? <List listData={movieList} getMovieDetails={getMovieDetails} /> : <h1>Search for a movie</h1>}
       {movieData && <MovieDetails data={movieData}/>}
+      {movieList ? <List listData={movieList} getMovieDetails={getMovieDetails} /> : <h1>Search for a movie</h1>}
   </div>
   );
 }

@@ -33,7 +33,11 @@ class Like {
     return likes;
   }
 
-  /** Create a movie likes row (from data), update db, return new job data. */
+  /** Create a movie likes row (from data), update db, return new job data.
+   * IMDB has their own rating system on a 1-10 scale and tracks the amount of votes.
+   * Here we scale the voting so that the rating is initially consistent with IMDB,
+   * and the API receives initial data for thumbs_up and thumbs_down
+   */
   static async create(id, imdb_rating, vote_count) {
     const tUp = ~~(parseInt(imdb_rating) / 10 * parseInt(vote_count));
     const tDown = parseInt(vote_count) - tUp;
