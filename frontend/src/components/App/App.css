@@ -13,3 +13,8 @@ a:hover{
 a:visited {
   text-decoration: underline;
 }
+
+.search-result{
+  display: flex;
+  flex-direction: column;
+}

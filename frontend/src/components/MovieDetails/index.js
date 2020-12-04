@@ -32,9 +32,9 @@ function MovieDetails({ data }) {
 
   return (
     <div className="MovieDetails">
-      <h1>{filmData.title}, {filmData.year}</h1>
-      <p>Description: {filmData.description}</p>
-      <p>Directors: {filmData.directors.join(', ')}</p>
+      <h1>{filmData.title} ({filmData.year})</h1>
+      <p><b>Description:</b> <i>{filmData.description}</i></p>
+      <p><b>Directors:</b> <i>{filmData.directors.join(', ')}</i></p>
       <Likes id={filmData.imdb_id}
         tUp={filmData.movieLikes.thumbs_up}
         tDown={filmData.movieLikes.thumbs_down}

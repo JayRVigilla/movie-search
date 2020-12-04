@@ -12,10 +12,8 @@ import ticket from './ticket.png';
 
 function Navigation() {
   const linkArr = [
-    { label: 'About', href: '/about' },
-    { label: 'Projects', href: '/projects' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Contact', href: '/contact' },
+    { label: 'About', href: 'https://github.com/JayRVigilla/movie-search' },
+    { label: 'Contact', href: 'http://jayvigilla.com' },
   ];
 
   const logo = {

@@ -12,7 +12,7 @@ import './SearchBar.css';
 function SearchBar({ handleSubmit, handleChange }) {
 
   return (
-    <form action="submit" onSubmit={handleSubmit} onChange={handleChange}>
+    <form className="SearchBar" action="submit" onSubmit={handleSubmit} onChange={handleChange}>
       <input name="q" type="text" placeholder="Search by Title" />
       <button>Search</button>
 </form>

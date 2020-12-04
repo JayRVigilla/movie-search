@@ -18,4 +18,25 @@ const movieDat = {
     "movieLikes": {thumbs_down: 1, thumbs_up: 2}
 }
 
-export default movieDat;
+const mockList = [ {
+    "title": "Gremlins 2: The New Batch",
+    "year": 1990,
+    "imdb_id": "tt0099700"
+  },
+  {
+    "title": "Gremlins",
+    "year": 1984,
+    "imdb_id": "tt0087363"
+  },
+  {
+    "title": "Gremlins: Recall",
+    "year": 2017,
+    "imdb_id": "tt7722868"
+  },
+  {
+    "title": "Spirits of the Air, Gremlins of the Clouds",
+    "year": 1988,
+    "imdb_id": "tt0098373"
+    }]
+
+module.exports =  {movieDat, mockList};

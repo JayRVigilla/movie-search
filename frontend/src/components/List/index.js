@@ -9,14 +9,14 @@ import Card from'./../Card';
  *
  */
 
-function List({ listData, getMovieDetails }) {
+function List({ classProp, listData, getMovieDetails }) {
   const renderList = () => listData.map((item) => < Card key={ item.imdb_id} data={item} getMovieDetails={getMovieDetails}/>)
   const style = {
     'listStyleType': 'none'
   }
 
   return (
-    <ul className="List" style={style}>
+    <ul className={`List ${classProp}`} style={style}>
       {renderList()}
     </ul>
   );

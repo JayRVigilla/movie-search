@@ -1,0 +1,10 @@
+.movie-card>button{
+  width: 66%;
+  border-color: rgb(98,107,112);
+  border-radius: 12px;
+  background-color: white;
+}
+
+.movie-card>button:hover{
+    border: none;
+}
