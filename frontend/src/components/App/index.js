@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {apiSearchByTitle, apiSearchByImdbId } from './../../callAPI'
 import './App.css';
+import Navigation from './../Navigation'
 import SearchBar from '../SearchBar';
 import List from '../List';
 import MovieDetails from '../MovieDetails';
@@ -10,8 +11,8 @@ function App() {
   const INITIAL_STATE = {q:''}
   const [movieList, setMovieList] = useState(undefined)
   const [formData, setFormData] = useState(INITIAL_STATE)
-  const [movieData, setMovieData] = useState(undefined)
-  // const [movieData, setMovieData] = useState(movieDat)
+  // const [movieData, setMovieData] = useState(undefined)
+  const [movieData, setMovieData] = useState(movieDat)
 
   const handleChange = evt => {
     const { name, value } = evt.target;
@@ -34,9 +35,12 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="App">
+      <Navigation />
+      <section className="section one">
+        {movieData && <MovieDetails data={movieData}/>}
+      </section>
       < SearchBar handleSubmit={handleSubmit} handleChange={handleChange}/>
-      {movieData && <MovieDetails data={movieData}/>}
       {movieList ? <List listData={movieList} getMovieDetails={getMovieDetails} /> : <h1>Search for a movie</h1>}
   </div>
   );

@@ -1,0 +1,12 @@
+.Logo a{
+  display: flex;
+  flex-direction: row;
+  font-size: large;
+  font-family: 'Sunset Boulevard', sans-serif;
+  align-items: center;
+}
+
+#logoImg{
+  width: 3em;
+  height: auto;
+}

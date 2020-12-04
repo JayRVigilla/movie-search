@@ -1,0 +1,14 @@
+.Navigation{
+  background-color: rgb(144 , 50, 47);
+  display: flex;
+  justify-content: space-between;
+}
+
+a{
+  color: rgb(238, 234, 219);
+  font-weight: bold;
+}
+
+ul{
+  list-style-type: none;
+}
